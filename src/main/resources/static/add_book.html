@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить книгу</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Добавить книгу</h1>
+<form id="add-book-form">
+    <label for="title">Название:</label>
+    <input type="text" id="title" required>
+
+    <label for="author">Автор:</label>
+    <input type="text" id="author" required>
+
+    <label for="isbn">ISBN:</label>
+    <input type="text" id="isbn" required>
+
+    <label for="copies">Доступные копии:</label>
+    <input type="number" id="copies" required>
+
+    <button type="submit">Добавить книгу</button>
+</form>
+
+<script>
+    document.getElementById("add-book-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const title = document.getElementById("title").value;
+        const author = document.getElementById("author").value;
+        const isbn = document.getElementById("isbn").value;
+        const copies = document.getElementById("copies").value;
+
+        const response = await fetch("/books", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title, author, isbn, copies }),
+        });
+
+        if (response.ok) {
+            alert("Книга добавлена успешно!");
+            document.getElementById("add-book-form").reset();
+        } else {
+            alert("Ошибка при добавлении книги.");
+        }
+    });
+</script>
+</body>
+</html>
